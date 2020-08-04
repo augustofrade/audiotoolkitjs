@@ -1,5 +1,5 @@
 # Audio Toolkit JS
-Version 1.0
+Version 1.3.1
 
 ## About
 Audio Toolkit JS is a simple project i made to easily reproduce audio in my other projects. However, anybody that may want to use it is allowed to do so.
@@ -37,11 +37,12 @@ See the text under "Initialization" to know more about "songs" and "options" arg
 
  - **songs [array]:** the track list to be reproduced by the audio player.
  - **options[object] (optional):** options for the audio player that may be changed later.
-	- randomize[bool]: whether the tracks will be reproduced in random order or not.
-	- loop["self", "all", undefined]: whether the tracks will be looped when ending.
+	- **randomize[bool]:** whether the tracks will be reproduced in random order or not.
+	- **loop["self", "all", undefined]:** whether the tracks will be looped when ending.
 		- "self": loops the current audio track only.
 		- "all": loops the track list after it has been finished.
 		 - undefined / no parameter: after ending the track list won't be looped.
+	- **onload[callback]**: Sets a callback function to be called when the audio's metadata has been loaded.
 	- **volume[float]:** (0-1). Sets the volume of the audio player.
 
 ### Basic commands

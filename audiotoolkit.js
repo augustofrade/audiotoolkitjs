@@ -4,6 +4,7 @@ Audio Toolkit JS Repository:
 https://github.com/augustofrade/audiotoolkitjs
 */
 
+
 function AudioKit(songs, options = {}) {
 	console.log(">> Audio Tool Kit JS made by https://github.com/augustofrade");
 	return {
@@ -13,10 +14,12 @@ function AudioKit(songs, options = {}) {
 		_player: new Audio(),
 		playing: false,
 		options: options,
+		onload: options.onload !== undefined ? options.onload : function() {},
 		init() {
 			this._player.volume = this.options.volume || 1;
 			this._player.onended = _=> this._handleAudioEnd();
 			this._player.src = this._currentSong;
+			this._player.onloadedmetadata = _=> this.onload();
 		},
 		_handleAudioEnd() {
 			switch(this.options.loop) {
@@ -32,9 +35,10 @@ function AudioKit(songs, options = {}) {
 					let currentIndex = this._songList.indexOf(this._currentSong)
 					if(currentIndex < this._songList.length-1) {
 						this.currentTrack = this.options.randomize ? this._songList[this._randomAudio()] : this._songList[currentIndex+1];
+						this._player.src = this._currentSong;
 						this.play();
 					} else
-						this.playing = false;
+						this.playing = false
 					break;
 			}
 		},
@@ -45,9 +49,8 @@ function AudioKit(songs, options = {}) {
 			return randomIndex;
 
 		},
-		
+
 		play() {
-			this._player.src = this._currentSong;
 			this._player.play();
 			this._player.currentTime = this._currentTime
 			this._currentTime = 0;
@@ -67,8 +70,8 @@ function AudioKit(songs, options = {}) {
 		set currentTrack(song) {
 			if(this._songList.indexOf(song) !== -1) {
 				this._currentSong = song;
+				this._player.src = song;
 				this._currentTime = 0;
-				this.play();
 			} else
 				throw "Audio track not found in track list"
 		},
@@ -79,8 +82,10 @@ function AudioKit(songs, options = {}) {
 			return this._player.currentTime;
 		},
 		set currentTime(time) {
-			if(time <= this._player.duration)
+			if(time <= this._player.duration) {
 				this._player.currentTime = time;
+				this._currentTime = time
+			}
 		},
 		get loop() {
 			if(typeof this.options.loop !== "undefined")
@@ -124,6 +129,8 @@ function AudioKit(songs, options = {}) {
 			} else {
 				this._currentSong = this.options.randomize ? this.tracks[this._randomAudio()] : recoverAudio;
 			}
+			this._player.src = this._currentSong;
+			this.onload();
 			if(this.playing)
 				this.play();
 		},
