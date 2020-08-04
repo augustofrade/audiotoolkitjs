@@ -146,6 +146,3 @@ function AudioKit(songs, options = {}) {
 		},
 	}
 }
-
-const audio = new AudioKit(["musica.mp3", "musica 2.mp3", "hidrocity.mp3", "sound.mp3"]);
-audio.init();
